@@ -5,6 +5,6 @@
     <list>
         <mapping class="com.example.zhanglei.coolweather.db.Province" />
         <mapping class = "com.example.zhanglei.coolweather.db.City" />
-        <mapping class = "com.example.zhanglei.coolweather.db.Province" />
+        <mapping class = "com.example.zhanglei.coolweather.db.County" />
     </list>
 </litepal>
