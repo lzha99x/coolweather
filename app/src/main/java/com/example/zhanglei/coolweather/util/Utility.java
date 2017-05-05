@@ -1,10 +1,13 @@
 package com.example.zhanglei.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.zhanglei.coolweather.db.City;
 import com.example.zhanglei.coolweather.db.County;
 import com.example.zhanglei.coolweather.db.Province;
+import com.example.zhanglei.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,5 +85,24 @@ public class Utility {
             }
         }
         return  false;
+    }
+
+    /**
+     * 将返回的JSON数据解析成Weather实体类
+     * */
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            Log.d(TAG, "handleWeatherResponse:  jsonObject = " + jsonObject.toString());
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            Log.d(TAG, "handleWeatherResponse: jsonArray = " + jsonArray.toString()) ;
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            Log.d(TAG, "handleWeatherResponse: weatherContent = " + weatherContent);
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
