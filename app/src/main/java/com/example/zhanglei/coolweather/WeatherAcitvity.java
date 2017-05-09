@@ -217,7 +217,7 @@ public class WeatherAcitvity extends AppCompatActivity {
                                     edit();
                             editor.putString("weather", responseText);
                             editor.apply();
-                            mweatherId = weather.basic.weatherId;
+                            mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);
                         } else {
                             Toast.makeText(WeatherAcitvity.this, "获取天气信息失败-2",
