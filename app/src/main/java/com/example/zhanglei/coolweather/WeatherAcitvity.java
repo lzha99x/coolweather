@@ -49,6 +49,7 @@ public class WeatherAcitvity extends AppCompatActivity {
     private TextView sportText;
     private ImageView bingPicImg;
     private Button navButton;
+    private String mWeatherId;
 
     public SwipeRefreshLayout swipeRefreshLayout;
     public DrawerLayout drawerLayout;
@@ -56,6 +57,7 @@ public class WeatherAcitvity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
@@ -69,20 +71,21 @@ public class WeatherAcitvity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = preferences.getString("weather", null);
         String bingPic = preferences.getString("bing_pic", null);
-        final String weatherId;
+
         if (weatherString != null) {
             Weather weather = Utility.handleWeatherResponse(weatherString);
-            weatherId = weather.basic.weatherId;
+            mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
-            weatherId = getIntent().getStringExtra("weather_id");
+            mWeatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
+            requestWeather(mWeatherId);
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestWeather(weatherId);
+                Log.d(TAG, "onRefresh: mweatherId = " + mWeatherId);
+                requestWeather(mWeatherId);
             }
         });
         if (bingPic != null) {
@@ -214,6 +217,7 @@ public class WeatherAcitvity extends AppCompatActivity {
                                     edit();
                             editor.putString("weather", responseText);
                             editor.apply();
+                            mweatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);
                         } else {
                             Toast.makeText(WeatherAcitvity.this, "获取天气信息失败-2",
