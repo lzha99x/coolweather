@@ -1,5 +1,6 @@
 package com.example.zhanglei.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.zhanglei.coolweather.gson.Forecast;
 import com.example.zhanglei.coolweather.gson.Weather;
+import com.example.zhanglei.coolweather.service.AutoUpdateService;
 import com.example.zhanglei.coolweather.util.HttpUtil;
 import com.example.zhanglei.coolweather.util.Utility;
 
@@ -102,6 +104,14 @@ public class WeatherAcitvity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 退出时候关闭服务.
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        stopService(intent);
+    }
+
     private void loadBingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         Log.d(TAG, "loadBingPic: ");
@@ -164,6 +174,8 @@ public class WeatherAcitvity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     private void initView() {
